@@ -6,7 +6,7 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>Uno PLayer View</title>
+        <title>Uno Player View</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="Libs/chui/chui-ios-3.9.2.css"/>
@@ -22,6 +22,15 @@ and open the template in the editor.
                 <p>{{this.numOfPlayers}}</p>
             </li>
             {{/each}}
+        </script>
+        <script type="text/x-handlebars" id="cardsTemplate">
+            {{#each cards }}
+            <div>
+
+                <h3>{{this.image}}</h3>
+
+            </div>
+            {{/cards}}
         </script>
 
         <script src="Js/index.js"></script>
@@ -45,8 +54,9 @@ and open the template in the editor.
             <button type="button" id="showHand">View Hand</button>
         </nav>
         <article id="selectedGame">
-            <section>
+            <section id = "all-cards">
                 <div id="waitForGameToStart"></div>
+
             </section>
         </article>
         

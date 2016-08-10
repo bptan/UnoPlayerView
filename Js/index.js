@@ -10,11 +10,12 @@
 //
 $(function () {
     var gamesTemplate = Handlebars.compile($("#gamesTemplate").html());
+    var cardsTemplate = Handlebars.compile($("#cardsTemplate").html());
     var gid;
     $("#reloadBtn").on("singletap", function() {
         var promise = $.getJSON("http://localhost:8080/uno/api/games");
         promise.done(function(result) {
-
+            console.log(result);
             $("#all-games").append(gamesTemplate({games: result}));
         });
 
@@ -34,7 +35,11 @@ $(function () {
         var promise = $.getJSON("http://localhost:8080/uno/api/games/"+gid+"/players/bob");
         console.log("showhand")
         promise.done(function(result){
-
+            console.log(result)
+            //var jsonArrayHand = JSON.stringify(result.hand);
+            //var arr = $.map(jsonArrayHand, function(el) { return el });
+            //console.log(arr);
+            $("#all-cards").append(cardsTemplate({cards: result}));
 
         });
         promise.fail(function(){
