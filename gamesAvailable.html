@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Uno PLayer View</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="Libs/chui/chui-ios-3.9.2.css"/>
+        <script src="Libs/handlebars-v4.0.5.js"></script>
+        <script src="Libs/jquery-3.1.0.js"></script>
+        <script src="Libs/chui/chui-3.9.2.js"></script>
+        <script type="text/x-handlebars" id="gamesTemplate">
+            {{#each games }}
+            <li>
+                <h3>{{this.title}}</h3>
+                <h4>{{this.gameid}}</h4>
+                <p>{{this.status}}</p>
+                <p>{{this.numOfPlayers}}</p>
+            </li>
+            {{/each}}
+        </script>
+
+        <script src="Js/index.js"></script>
+    </head>    
+
+    <body>
+        <nav>
+            <h1> Available Games </h1>
+            <button type="button" id="reloadBtn">Reload</button>
+        </nav>
+        <article id="main">
+            <section>
+                <h2>List of games</h2>
+                <ul class="list" id="all-games">
+                </ul>
+            </section>
+        </article>
+
+        <nav>
+            <h1> Selected Game </h1>
+            <button type="button" id="showHand">View Hand</button>
+        </nav>
+        <article id="selectedGame">
+            <section>
+                <div id="waitForGameToStart"></div>
+            </section>
+        </article>
+        
+        <nav>
+            <h1> Register </h1>
+        </nav>
+        <article id="register">
+            <section>
+               <form action="RegistrationServlet" method="POST">
+                <div class="content">
+                    <table class="tableStyle1" align="center">
+                        <tr>
+                            <td colspan="2" align="center" style="padding-top:30px; padding-bottom: 20px;"><u><h3>Player Registration</h3></u></td>
+                        </tr>
+                        <tr>
+                            <td>USER NAME :</td>
+                            <td><input type="text" id="txtUserName" name="txtUserName" value="" placeholder="User Name"></td>
+                        </tr>
+                         <tr>
+                            <td>PASSWORD :</td>
+                            <td><input type="password" id="txtPassword" name="txtPassword" value="" placeholder="Password"></td>
+                        </tr>
+                        <tr>
+                            <td>CONFIRM PASSWORD :</td>
+                            <td><input type="password" id="txtConfirmPwd" name="txtConfirmPwd" value="" placeholder="Confirm Password"></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-bottom: 30px; text-align: right;">
+                                <input type="submit" id = "btnSave" name="btnSave" value="Save">
+                            </td>
+                            <td style="padding-bottom: 30px; text-align: left;">
+                                <input type="reset" id = "btnReset" name="btnReset" value="Cancel">
+                            </td>                
+                        </tr>
+                    </table>
+                </div>
+            </form>
+            </section>
+        </article>
+        
+    
+    </body>
+    
+</html>
