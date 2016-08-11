@@ -13,6 +13,8 @@ $(function () {
     var cardsTemplate = Handlebars.compile($("#cardsTemplate").html());
     var gid;
     var user
+
+
     $("#reloadBtn").on("singletap", function() {
         var promise = $.getJSON("http://localhost:8080/uno/api/games");
         promise.done(function(result) {
@@ -64,6 +66,9 @@ $(function () {
             $.UIGoToArticle("#main");
             console.log(user);
         })
+        promise.fail(
+            $("#information").val("Username in use")
+        );
     })
 
 
