@@ -25,11 +25,11 @@ and open the template in the editor.
     </script>
     <script type="text/x-handlebars" id="cardsTemplate">
         {{#each cards }}
-        <div>
+        <li>
 
             <h3>{{this.image}}</h3>
 
-        </div>
+        </li>
         {{/cards}}
     </script>
 
@@ -42,7 +42,7 @@ and open the template in the editor.
 </nav>
 <article id="register">
     <section>
-        <form action="http://localhost:8080/uno/api/user/register" method="POST">
+
             <div class="content">
                 <table class="tableStyle1" align="center">
                     <tr>
@@ -74,7 +74,7 @@ and open the template in the editor.
                     </tr>
                 </table>
             </div>
-        </form>
+
     </section>
 </article>
 <nav>
@@ -94,8 +94,10 @@ and open the template in the editor.
     <button type="button" id="showHand">View Hand</button>
 </nav>
 <article id="selectedGame">
-    <section id="all-cards">
+    <section>
         <div id="waitForGameToStart"></div>
+        <ul class="list" id="all-cards">
+        </ul>
 
     </section>
 </article>
