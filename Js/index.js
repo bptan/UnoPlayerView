@@ -10,7 +10,7 @@
 //
 $(function () {
     var gamesTemplate = Handlebars.compile($("#gamesTemplate").html());
-    var cardsTemplate = Handlebars.compile($("#cardsTemplate").html());
+
     var gid;
     var user
 
