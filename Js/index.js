@@ -10,15 +10,16 @@
 //
 $(function () {
     var gamesTemplate = Handlebars.compile($("#gamesTemplate").html());
-
+    var rootURL = "http://localhost:8080/uno/api";
     var gid;
-    var user
+    var user;
 
 
     $("#reloadBtn").on("singletap", function() {
-        var promise = $.getJSON("http://localhost:8080/uno/api/games");
+        var promise = $.getJSON(rootURL+"/games");
         promise.done(function(result) {
             console.log(result);
+            $("#all-games").empty();
             $("#all-games").append(gamesTemplate({games: result}));
         });
 
@@ -26,7 +27,11 @@ $(function () {
 
     $("#all-games").on("singletap", "li", function() {
         gid = $(this).find("h4").text();
-        var promise = $.get("http://localhost:8080/uno/api/games/"+gid+"?username="+user)
+        var promise = $.ajax({
+            type: 'PUT',
+            url: rootURL+"/games/" + gid + "?username=" + user,
+
+        })
             promise.done(function(result) {
 
                 $.UIGoToArticle("#selectedGame");
@@ -35,13 +40,11 @@ $(function () {
     });
 
     $("#showHand").on("singletap", function(){
-        var promise = $.getJSON("http://localhost:8080/uno/api/games/"+gid+"/players/"+user);
+        var promise = $.getJSON(rootURL+"/games/"+gid+"/players/"+user);
         console.log("showhand")
         promise.done(function(result){
             console.log(result.length)
-            //var jsonArrayHand = JSON.stringify(result.hand);
-            //var arr = $.map(jsonArrayHand, function(el) { return el });
-            //console.log(arr);
+            $("#all-cards").empty();
             for (var i = 0; i< result.length;i++){
                 var cardUrl = $('<li class = "card">');
                 var img = $("<img>").attr("src","Images/"+result[i].image+".png");
@@ -57,12 +60,13 @@ $(function () {
 
     $("#btnSave").on("singletap",function(){
         console.log("before click")
-        var promise = $.post("http://localhost:8080/uno/api/user/register",
+        var promise = $.post(rootURL+"/user",
             {username:$("#txtUserName").val(),
             password:$("#txtPassword").val()});
         console.log("after click");
         promise.done(function(result){
-            user = result;
+            var data = result;
+            user = data.username;
             $.UIGoToArticle("#main");
             console.log(user);
         })
@@ -71,9 +75,8 @@ $(function () {
         );
     })
 
-
-
-
-
+    $("#btnBackInsideSelectedGame").on("singletap",function(){
+        $.UIGoBack();
+    });
 
 });
