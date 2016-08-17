@@ -31,15 +31,17 @@ $(function () {
         gid = $(this).find("h4").text();
         var promise = $.post(rootURL + "/games/" + gid + "/players",
             {username: user});
-
+        $("#gametitle").empty();
+        $("#gametitle").append("Room: "+ $(this).find("h3").text());
         promise.done(function (result) {
             //$("#all-cards").empty();
             //console.log("inside promise done");
             $.UIGoToArticle("#selectedGame");
             //get websocket connection
             socket = new WebSocket(rootURLws+"/games/"+gid+"/"+user);
+
             $("#playername").empty();
-            $("#playername").append(user);
+            $("#playername").append("Player: "+ user);
 
             socket.onmessage = function(msg){
 
