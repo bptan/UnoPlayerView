@@ -33,11 +33,13 @@ $(function () {
             {username: user});
 
         promise.done(function (result) {
-
+            //$("#all-cards").empty();
+            //console.log("inside promise done");
             $.UIGoToArticle("#selectedGame");
             //get websocket connection
             socket = new WebSocket(rootURLws+"/games/"+gid+"/"+user);
-
+            $("#playername").empty();
+            $("#playername").append(user);
 
             socket.onmessage = function(msg){
 
@@ -46,62 +48,67 @@ $(function () {
                     var result = jsonObj.hand;
                     $("#all-cards").empty();
                     for (var i = 0; i < result.length; i++) {
-                        var cardUrl = $('<li class = "card">');
-                        var img = $("<img>").attr("src", "Images/" + result[i].image + ".png");
+                        var imagename = result[i].image;
+
+                        var cardUrl = $('<li class = "card" data-card="'+imagename+'">');
+                        //$("<li>").addClass("card").attr("data-card", imagename);
+                        var img = $("<img>").attr("src", "Images/" + result[i].image + ".png").attr("alt",result[i].image);
+
                         cardUrl.append(img);
+                        //console.log(cardUrl);
                         $("#all-cards").append(cardUrl)
                     }
                 }
 
             };
 
-
         });
-
-
         console.log("joingame")
     });
 
-    $("#showHand").on("singletap", function () {
-        var promise = $.getJSON(rootURL + "/games/" + gid + "/players/" + user);
-        console.log("showhand")
-        promise.done(function (result) {
-            console.log(result.length)
-            $("#all-cards").empty();
-            for (var i = 0; i < result.length; i++) {
-                var cardUrl = $('<li class = "card">');
-                var img = $("<img>").attr("src", "Images/" + result[i].image + ".png");
-                cardUrl.append(img);
-                $("#all-cards").append(cardUrl)
-            }
-        });
-        promise.fail(function () {
-            //wont come here
-            //$("#waitForGameToStart").val("Waiting");
-        })
-    })
-
     $("#btnSave").on("singletap", function () {
         console.log("before click")
-        var promise = $.post(rootURL + "/user",
-            {
-                username: $("#txtUserName").val(),
-                password: $("#txtPassword").val()
+        var usernameEntered =true;
+        if($("#txtUserName").val()==""){
+            alert("Please enter username!");
+            usernameEntered=false;
+        }
+
+        if(usernameEntered){
+            var promise = $.post(rootURL + "/user",
+                {
+                    username: $("#txtUserName").val(),
+                    password: $("#txtPassword").val()
+                });
+            console.log("after click");
+            promise.done(function (result) {
+                var data = result;
+                user = data.username;
+                $.UIGoToArticle("#main");
+                console.log(user);
+            })
+            promise.fail(function(){
+                    alert("Username in use!");
             });
-        console.log("after click");
-        promise.done(function (result) {
-            var data = result;
-            user = data.username;
-            $.UIGoToArticle("#main");
-            console.log(user);
-        })
-        promise.fail(
-            $("#information").val("Username in use")
-        );
-    })
+
+        };
+
+    });
 
     $("#btnBackInsideSelectedGame").on("singletap", function () {
+        //socket.close();
         $.UIGoBack();
+    });
+
+    $("#all-cards").on("singletap", "li", function () {
+
+        var message = {};
+        message.command = "playcard";
+        message.pname = user;
+        message.card = $(this).attr("data-card");
+
+        socket.send(JSON.stringify(message));
+
     });
 
 });
